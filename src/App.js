@@ -1,26 +1,51 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react';
+import axios from "axios";
 
-function App() {
+import ShowID from './ShowID/ShowID';
+import ShowEmail from './ShowEmail/ShowEmail';
+import ShowName from './ShowName/ShowName';
+
+const App = () => {
+
+  const [details, setDetails] = useState(null);
+  const [emailFlag, setEmailFlag] = useState(false);
+  const [nameFlag, setNameFlag] = useState(false);
+
+  const fetchURL = "https://jsonplaceholder.typicode.com/users";
+  
+const fetchData = async () => {
+    const result = await axios(fetchURL);
+    setDetails(result.data);
+  } 
+
+
+const handleNameClick = e => {
+  setNameFlag(true);
+  setEmailFlag(false);
+  
+}
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <div>
+      {fetchData}
+      <h1 style={{textAlign: "center"}}>
+          ----    Welcome User    ----
+      </h1>
+
+      <div style={ { margin: "30px", textAlign: "center"  }}>
+          <button onClick={()=>handleNameClick} > Name</button>
+        <button> Email</button>
+      </div>
+
+    
+      
+      <ShowID details = {details}  />
+      <ShowEmail details = {details} />
+          
+      </div>
+
+    
+  )
 }
 
 export default App;
